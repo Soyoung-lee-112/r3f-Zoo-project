@@ -1,0 +1,10 @@
+{
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react"],
+  "rules": {
+    "react/prop-types": "off",
+    "no-console": "warn",
+    "react/jsx-key": "warn",
+    "no-unused-vars": "warn"
+  }
+}
