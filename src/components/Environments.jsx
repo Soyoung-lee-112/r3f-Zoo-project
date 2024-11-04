@@ -1,13 +1,14 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useHelper } from "@react-three/drei";
 import { Animal } from "./Animal";
 import { ZooMap } from "./ZooMap";
 import { Dino } from "./Dino";
 
-import { Fragment, Suspense, useContext } from "react";
+import { Fragment, Suspense, useContext, useRef } from "react";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { EditContext } from "../context/EditContext";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Rtanny } from "./Rtanny";
+import * as THREE from "three";
 
 const START_Y = 20;
 
@@ -25,6 +26,9 @@ export const Environments = () => {
     }
   });
 
+  const lighrRef = useRef();
+  useHelper(lighrRef, THREE.DirectionalLightHelper);
+
   return (
     <>
       {isEditMode ? (
@@ -35,7 +39,18 @@ export const Environments = () => {
         />
       ) : null}
       <ambientLight intensity={4} />
-      <directionalLight intensity={4} position={[3, 3, 3]} />
+      <directionalLight
+        shadow-camera-top={100}
+        shadow-camera-bottom={-100}
+        shadow-camera-left={-100}
+        shadow-camera-right={100}
+        shadow-mapsize={[5000, 5000]}
+        ref={lighrRef}
+        castShadow
+        intensity={4}
+        target-position={[160, 0, 100]}
+        position={[162, 10, 102]}
+      />
       <OrbitControls />
 
       <Suspense>

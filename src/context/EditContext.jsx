@@ -61,7 +61,7 @@ export const EditProvider = ({ children }) => {
   };
   const onObjectClicked = (id) => (e) => {
     e.stopPropagation();
-    if (id && id === selectedId) {
+    if (id && id === selectedId && isEditMode) {
       transform();
       setSelectedId(null);
       return;

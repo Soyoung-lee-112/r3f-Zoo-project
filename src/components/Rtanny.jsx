@@ -22,8 +22,12 @@ export const Rtanny = (props) => {
   const { scene, animations } = useGLTF(`/models/rtanny.glb`);
   const [animation, setAnimation] = useState("Idle");
   const { actions } = useAnimations(animations, group);
-  const { isEditMode } = useContext(EditContext);
-
+  const { isEditMode, selectedId } = useContext(EditContext);
+  scene.traverse((obj) => {
+    if (obj.isMesh) {
+      obj.castShadow = true;
+    }
+  });
   useEffect(() => {
     if (body.current && actions[animation]) {
       actions[animation].reset().play();
@@ -46,6 +50,7 @@ export const Rtanny = (props) => {
   useFrame((state) => {
     if (!body.current) return;
     if (isEditMode) return;
+    if (selectedId) return;
     const { x, y, z } = group.current.children[0].position;
     const impulse = { x: 0, y: 0, z: 0 };
 
@@ -103,13 +108,13 @@ export const Rtanny = (props) => {
         onCollisionEnter={(e) => {
           if (e.other.rigidBodyObject.name === "land") {
             isOnLand.current = true;
-            console.log("true!");
+            // console.log("true!");
           }
         }}
         onCollisionExit={(e) => {
           if (e.other.rigidBodyObject.name === "land") {
             isOnLand.current = false;
-            console.log("false!");
+            // console.log("false!");
           }
         }}
       >
